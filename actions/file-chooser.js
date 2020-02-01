@@ -1,22 +1,22 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { onlyPrivate, onlyAllowed } = require('../middlewares')
-const querystring = require('querystring')
-const path = require('path')
-const { sendFile, sleep, loadSearchParams } = require('../lib')
-const chooseKeyboard = require('../generators/file-chooser-keyboard')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { onlyPrivate, onlyAllowed } = require('../middlewares');
+const querystring = require('querystring');
+const path = require('path');
+const { sendFile, sleep, loadSearchParams } = require('../lib');
+const chooseKeyboard = require('../generators/file-chooser-keyboard');
 
 composer.action(
   /file:(.+)/i,
   onlyPrivate,
   onlyAllowed,
   async ctx => {
-    const params = querystring.parse(ctx.match[1])
-    const torrentId = params['i']
+    const params = querystring.parse(ctx.match[1]);
+    const torrentId = params['i'];
     if (!torrentId) {
       return ctx.answerCbQuery('No torrent id was given')
     }
-    const fileId = params['f']
+    const fileId = params['f'];
     if (!fileId) {
       return ctx.answerCbQuery('No file id was given')
     }
@@ -34,7 +34,7 @@ composer.action(
     if (!torrent.is_finished) {
       return ctx.answerCbQuery(`Hmmm, this torrent isn't finished yet...\nI recommend to ask admin about this thing :thinking:`)
     }
-    const file = torrent.files.find(file => file.id === Number(fileId))
+    const file = torrent.files.find(file => file.id === Number(fileId));
 
     if (!file) {
       return ctx.answerCbQuery(`File with given id ${fileId} wasn't found on this torrent`)
@@ -54,7 +54,7 @@ composer.action(
     }
     ctx.answerCbQuery('')
   }
-)
+);
 
 composer.action(
   /files:(.+)/i,
@@ -62,7 +62,7 @@ composer.action(
   onlyAllowed,
   async ctx => {
     const { value } = loadSearchParams(ctx.callbackQuery.message)
-    const searchUrl = `https://${process.env.HOST}/?p=${ctx.match[2]}${value ? `&q=${value}` : ''}`
+    const searchUrl = `https://${process.env.HOST}/?p=${ctx.match[2]}${value ? `&q=${value}` : ''}`;
     const params = querystring.parse(ctx.match[1])
     const offset = Number(params['o']) || 0
     const torrentId = Number(params['i'])
@@ -81,7 +81,7 @@ composer.action(
       return ctx.reply(text, extra)
     }
     return ctx.editMessageText(text, extra)
-  })
+  });
 
 composer.action(
   /filesall:(.+)/i,
@@ -130,7 +130,7 @@ composer.action(
       }
     })
   }
-)
+);
 module.exports = app => {
   app.use(composer.middleware())
-}
+};

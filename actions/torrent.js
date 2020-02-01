@@ -1,14 +1,14 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { torrentView } = require('../generators')
-const { loadSearchParams } = require('../lib')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { torrentView } = require('../generators');
+const { loadSearchParams } = require('../lib');
 
 composer.action([
   /^v=(\S+?):(\S+)$/i,
   /^t=(\S+?):(\S+)$/i
 ], async ctx => {
-  const { value } = loadSearchParams(ctx.callbackQuery.message)
-  const { user } = ctx.state
+  const { value } = loadSearchParams(ctx.callbackQuery.message);
+  const { user } = ctx.state;
   try {
     var { text, extra } = await torrentView(
       ctx.match[1],
@@ -24,8 +24,8 @@ composer.action([
   }
   ctx.answerCbQuery('')
   ctx.editMessageText(text, extra)
-})
+});
 
 module.exports = app => {
   app.use(composer.middleware())
-}
+};

@@ -1,7 +1,7 @@
-const Telegraf = require('telegraf').default
-const bot = new Telegraf(process.env.BOT_TOKEN)
-const logger = require('./database/logger')
-const collection = require('./database')
+const Telegraf = require('telegraf').default;
+const bot = new Telegraf(process.env.BOT_TOKEN);
+const logger = require('./database/logger');
+const collection = require('./database');
 
 bot.telegram.getMe()
   .then(botInfo => {

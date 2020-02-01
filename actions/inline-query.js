@@ -1,19 +1,19 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { AllHtmlEntities } = require('html-entities')
-const { buttons, templates, buffer, getXtFromMagnet } = require('../lib')
-const { decode } = new AllHtmlEntities()
-const { getTorrent, search } = require('../nyaasi')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { AllHtmlEntities } = require('html-entities');
+const { buttons, templates, buffer, getXtFromMagnet } = require('../lib');
+const { decode } = new AllHtmlEntities();
+const { getTorrent, search } = require('../nyaasi');
 
 composer.inlineQuery(/^torrent:([0-9]+)$/i, async ({ match, me, inlineQuery, answerInlineQuery }) => {
   if (inlineQuery.offset && inlineQuery.offset === '1') { return answerInlineQuery([], queryOptions()) }
-  const torrentId = match[1]
+  const torrentId = match[1];
   try {
     var torrent = await getTorrent(torrentId)
   } catch (e) {
     return answerInlineQuery(sendError(e), queryOptions())
   }
-  torrent.id = torrentId
+  torrent.id = torrentId;
   try {
     await answerInlineQuery(
       [
@@ -24,16 +24,16 @@ composer.inlineQuery(/^torrent:([0-9]+)$/i, async ({ match, me, inlineQuery, ans
   } catch (e) {
     return answerInlineQuery(sendError(e), queryOptions())
   }
-})
+});
 
 composer.on('inline_query', async ctx => {
-  const { query } = ctx.inlineQuery
-  let { offset } = ctx.inlineQuery
+  const { query } = ctx.inlineQuery;
+  let { offset } = ctx.inlineQuery;
   if (offset && offset === '0') {
     return ctx.answerInlineQuery([], queryOptions(undefined, query))
   }
-  offset = offset ? Number.parseInt(offset) : 0
-  const page = offset ? Math.floor(offset / 75) + 1 : 1
+  offset = offset ? Number.parseInt(offset) : 0;
+  const page = offset ? Math.floor(offset / 75) + 1 : 1;
   try {
     var { files: response, current_page, last_page } = await search(query, { params: { p: page } })
   } catch (e) {
@@ -58,11 +58,11 @@ composer.on('inline_query', async ctx => {
   } catch (e) {
     return ctx.answerInlineQuery(sendError(e), queryOptions(undefined, undefined, '0'))
   }
-})
+});
 
 module.exports = app => {
   app.use(composer.middleware())
-}
+};
 
 function inlineTorrent (torrent, me) {
   return {
@@ -95,7 +95,7 @@ function inlineTorrent (torrent, me) {
 }
 
 function sendError (error) {
-  console.log(error)
+  console.log(error);
   return [
     {
       type: 'article',
