@@ -1,10 +1,10 @@
-const Composer = require('telegraf/composer')
-const path = require('path')
-const composer = new Composer()
-const { buttons, buffer, sendFile } = require('../lib')
-const { torrentView, searchTorrentView } = require('../generators')
-const { getTorrent } = require('../nyaasi')
-const { onlyPrivate } = require('../middlewares')
+const Composer = require('telegraf/composer');
+const path = require('path');
+const composer = new Composer();
+const { buttons, buffer, sendFile } = require('../lib');
+const { torrentView, searchTorrentView } = require('../generators');
+const { getTorrent } = require('../nyaasi');
+const { onlyPrivate } = require('../middlewares');
 
 class StartHandler {
   constructor (ctx) {
@@ -19,17 +19,17 @@ class StartHandler {
   }
 
   async view (id) {
-    const torrent1 = await torrentView(id, '')
+    const torrent1 = await torrentView(id, '');
     await this.ctx.reply(torrent1.text, torrent1.extra)
   }
 
   async query (query) {
-    const result = await searchTorrentView(query)
+    const result = await searchTorrentView(query);
     await this.ctx.reply(result.text, result.extra)
   }
 
   async magnet (id) {
-    const torrent = await getTorrent(id)
+    const torrent = await getTorrent(id);
     await this.ctx.reply(`<a href="https://${process.env.HOST}/">&#8203;</a>${torrent.title}\n<code>${torrent.links.magnet}</code>`, {
       parse_mode: 'HTML',
       disable_web_page_preview: true,
@@ -53,9 +53,9 @@ class StartHandler {
   }
 
   async file (torrentId, fileId) {
-    const dbTorrent = await this.ctx.db('torrents').findOne({ id: torrentId }).exec()
+    const dbTorrent = await this.ctx.db('torrents').findOne({ id: torrentId }).exec();
     if (dbTorrent && dbTorrent.files.length) {
-      const file = dbTorrent.files.find(file => file.id === fileId)
+      const file = dbTorrent.files.find(file => file.id === fileId);
       if (file) {
         await sendFile(
           this.ctx.chat.id,
@@ -84,41 +84,41 @@ class StartHandler {
 
 composer.start(onlyPrivate, async ctx => {
   if (ctx.startPayload) {
-    const text = buffer.decode(ctx.startPayload)
-    const start = new StartHandler(ctx)
+    const text = buffer.decode(ctx.startPayload);
+    const start = new StartHandler(ctx);
     switch (true) {
       case /download:[0-9]+/i.test(text):
-        const torrentId = text.split(':').pop()
+        const torrentId = text.split(':').pop();
         try {
-          await start.download(torrentId)
+          await start.download(torrentId);
           return 
         } catch (e) {}
-        break
+        break;
       case /^\b(view|torrent):([0-9]+)$/i.test(text):
-        const vid = text.split(':').pop()
+        const vid = text.split(':').pop();
         try {
-          await start.view(vid)
+          await start.view(vid);
           return 
         } catch (e) {}
-        break
+        break;
       case /query:[\S\s]+/i.test(text):
-        const query = text.match(/query:([\S\s])+/i)[1]
+        const query = text.match(/query:([\S\s])+/i)[1];
         try {
-          await start.query(query)
+          await start.query(query);
           return 
         } catch (e) {}
         break
       case /magnet:[0-9]+/i.test(text):
-        const mid = text.split(':').pop()
+        const mid = text.split(':').pop();
         try {
-          await start.magnet(mid)
+          await start.magnet(mid);
           return 
         } catch (e) {}
         break
       case /file:[0-9]+:[0-9]+/i.test(text):
-        const splitted = text.split(':')
-        const fileId = splitted.pop()
-        const tId = splitted.pop()
+        const splitted = text.split(':');
+        const fileId = splitted.pop();
+        const tId = splitted.pop();
         try {
           await start.file(Number(tId), Number(fileId))
         } catch (e) {}
@@ -136,8 +136,8 @@ composer.start(onlyPrivate, async ctx => {
       ]
     }
   })
-})
+});
 
 module.exports = app => {
   app.use(composer.middleware())
-}
+};

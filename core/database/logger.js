@@ -5,7 +5,7 @@ module.exports = () => async (ctx, next) => {
     ) &&
     ctx.chat.type === 'private'
   ) {
-    let user = await ctx.db('users').findOne({ id: ctx.from.id }).exec()
+    let user = await ctx.db('users').findOne({ id: ctx.from.id }).exec();
     if (user) {
       await ctx.db('users').updateOne({ id: ctx.from.id }, { $set: { last_update: Date.now() } }).exec()
     } else {
@@ -14,4 +14,4 @@ module.exports = () => async (ctx, next) => {
     ctx.state.user = user
   }
   next()
-}
+};

@@ -1,6 +1,6 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { onlyPrivate } = require('../middlewares')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { onlyPrivate } = require('../middlewares');
 
 composer.command('about',
   onlyPrivate,
@@ -13,8 +13,8 @@ I'm still in beta, so please be patient! ( ﾉ ﾟｰﾟ)ﾉ
 My source code at <a href="https://github.com/sakhib-orzklv/bsba-bot">github</a>`, {
     parse_mode: 'HTML'
   })
-)
+);
 
 module.exports = app => {
   app.use(composer.middleware())
-}
+};

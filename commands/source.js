@@ -1,6 +1,6 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { onlyPrivate } = require('../middlewares')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { onlyPrivate } = require('../middlewares');
 
 composer.command('source',
   onlyPrivate,
@@ -18,8 +18,8 @@ composer.command('source',
       ]
     }
   })
-)
+);
 
 module.exports = app => {
   app.use(composer.middleware())
-}
+};

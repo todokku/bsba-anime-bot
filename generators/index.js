@@ -1,13 +1,13 @@
-const searchKeyboard = require('./search-keyboard')
-const searchTorrentView = require('./search-torrent-view')
-const torrentView = require('./torrent-view')
-const { buttons, templates } = require('../lib')
+const searchKeyboard = require('./search-keyboard');
+const searchTorrentView = require('./search-torrent-view');
+const torrentView = require('./torrent-view');
+const { buttons, templates } = require('../lib');
 module.exports = {
   searchKeyboard,
   torrentView,
   searchTorrentView,
   async searchTorrentKeyboard (query = '', params = {}) {
-    const keyboard = await searchKeyboard(query, params)
+    const keyboard = await searchKeyboard(query, params);
     keyboard.unshift(
       [
         {
@@ -15,7 +15,7 @@ module.exports = {
           callback_data: 'p=1:o=10'
         }
       ]
-    )
+    );
     keyboard.unshift(
       [
         {
@@ -29,9 +29,9 @@ module.exports = {
           callback_data: 'p=3:o=0'
         }
       ]
-    )
-    const searchUrl = `https://${process.env.HOST}/?p=1&q=${query}`
-    const messageText = templates.searchText(searchUrl, query, 1, 0)
+    );
+    const searchUrl = `https://${process.env.HOST}/?p=1&q=${query}`;
+    const messageText = templates.searchText(searchUrl, query, 1, 0);
     return {
       text: messageText,
       extra: {
@@ -43,4 +43,4 @@ module.exports = {
       }
     }
   }
-}
+};

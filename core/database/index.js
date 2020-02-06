@@ -3,22 +3,22 @@ const { Schema } = mongoose;
 
 const connection = mongoose.createConnection(process.env.DATABASE_URL, {
   useNewUrlParser: true
-})
+});
 
 connection.then(() => {
   console.log('DB connected')
-})
+});
 
 connection.catch(err => {
   console.log('mongodb.connectionError', err)
-})
+});
 
 connection.on('error', err => {
   console.log('mongodb.connectionError', err)
-})
+});
 connection.on('disconnected', () => {
   console.log('mongodb.disconnected')
-})
+});
 
 const collections = [
   {
@@ -212,12 +212,12 @@ const collections = [
       ]
     })
   }
-]
+];
 
 module.exports = (collectionName) => {
-  const collection = collections.find(el => el.name === collectionName)
+  const collection = collections.find(el => el.name === collectionName);
   if (!collection) {
     throw new Error(`Collection not found: ${collectionName}`)
   }
   return connection.model(collectionName, collection.schema)
-}
+};

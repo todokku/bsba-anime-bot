@@ -1,9 +1,9 @@
-const Composer = require('telegraf/composer')
-const composer = new Composer()
-const { onlyPrivate } = require('../middlewares')
-const { torrentView } = require('../generators')
+const Composer = require('telegraf/composer');
+const composer = new Composer();
+const { onlyPrivate } = require('../middlewares');
+const { torrentView } = require('../generators');
 
-const regexp = new RegExp(`${process.env.HOST.replace(/\./ig, '\\.')}\\/view\\/([0-9]+)`, 'i')
+const regexp = new RegExp(`${process.env.HOST.replace(/\./ig, '\\.')}\\/view\\/([0-9]+)`, 'i');
 
 composer.url(regexp,
   Composer.branch(onlyPrivate,
@@ -22,7 +22,7 @@ composer.url(regexp,
       }
       ctx.reply(text, extra)
     })
-)
+);
 
 module.exports = app => {
   app.use(composer.middleware())

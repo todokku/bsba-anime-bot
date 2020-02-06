@@ -1,12 +1,12 @@
-const cheerio = require('cheerio')
-const origin = `https://${process.env.HOST}`
-const bytes = require('bytes-iec')
+const cheerio = require('cheerio');
+const origin = `https://${process.env.HOST}`;
+const bytes = require('bytes-iec');
 
 function parseSearch (html) {
-  const page = cheerio.load(html)
-  const table = page('body > div.container > div.table-responsive > table > tbody')
+  const page = cheerio.load(html);
+  const table = page('body > div.container > div.table-responsive > table > tbody');
   const files = table.children('tr').map((i, el) => {
-    const select = cheerio.load(el)
+    const select = cheerio.load(el);
     return {
       id: Number.parseInt(
         select('td:nth-child(2) > a')
@@ -37,17 +37,17 @@ function parseSearch (html) {
       completed: select('td:nth-child(8)').text(),
       entry: getEntry(el.attribs['class'])
     }
-  }).get()
+  }).get();
   const current_page = Number.parseInt(
     page('body > div.container > div.center > nav > ul').html()
       ? new URL(page('body > div.container > div.center > nav > ul > li.active > a').attr('href'), origin).searchParams.get('p')
       : page('body > div.container > div.center > ul > li.active').text()
-  ) || 1
+  ) || 1;
   const last_page = Number.parseInt(
     page('body > div.container > div.center > nav > ul').html()
       ? new URL(page('body > div.container > div.center > nav > ul > li:last-of-type').prev().children('a').attr('href'), origin).searchParams.get('p')
       : new URL(page('body > div.container > div.center > ul > li.next').prev().children('a').attr('href'), origin).searchParams.get('p')
-  ) || 1
+  ) || 1;
   return {
     current_page,
     last_page,
@@ -56,7 +56,7 @@ function parseSearch (html) {
 }
 
 function parseTorrent (html, id) {
-  const select = cheerio.load(html)
+  const select = cheerio.load(html);
   return {
     id: typeof id === 'string' ? Number.parseInt(id) : id,
     title: select('body > div.container > div.panel > div.panel-heading > h3').text().trim(),
@@ -99,21 +99,21 @@ function parseTorrent (html, id) {
 module.exports = {
   parseSearch,
   parseTorrent
-}
+};
 
 function getEntry (entry) {
   switch (entry) {
     case 'danger':
-      return '[Remake]'
+      return '[Remake]';
     case 'success':
-      return '[Trusted]'
+      return '[Trusted]';
     default:
       return ''
   }
 }
 
 function parseTorrentFiles (html) {
-  const select = cheerio.load(html)
+  const select = cheerio.load(html);
 
   return select('ul')
     .find('li')
@@ -122,7 +122,7 @@ function parseTorrentFiles (html) {
     })
     .map((i, el) => {
       const element = cheerio(el)
-      const size = element.children('span.file-size').text().replace(/\(|\)/ig, '')
+      const size = element.children('span.file-size').text().replace(/\(|\)/ig, '');
       return {
         type: 'file',
         title: element.text().replace(` (${size})`, ''),

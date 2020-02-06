@@ -1,9 +1,9 @@
-const { request } = require('../lib')
-const merge = require('deepmerge')
+const { request } = require('../lib');
+const merge = require('deepmerge');
 const {
   parseSearch,
   parseTorrent
-} = require('./scrap')
+} = require('./scrap');
 
 class Nyassi {
   static search (query = '', params = {}) {
@@ -38,4 +38,4 @@ class Nyassi {
   }
 }
 
-module.exports = Nyassi
+module.exports = Nyassi;

@@ -6,16 +6,16 @@ const collection = require('./database');
 bot.telegram.getMe()
   .then(botInfo => {
     bot.options.username = botInfo.username
-  })
+  });
 
 bot.context.db = collection
 
-bot.use(logger())
+bot.use(logger());
 
 module.exports = {
   bot
-}
+};
 
-bot.startPolling()
+bot.startPolling();
 
-console.log('Bot started')
+console.log('Bot started');

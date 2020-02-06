@@ -1,11 +1,11 @@
-const { getTorrent } = require('../nyaasi')
-const { templates, buttons, buffer, getXtFromMagnet } = require('../lib')
-const collection = require('../core/database')
-const querystring = require('querystring')
+const { getTorrent } = require('../nyaasi');
+const { templates, buttons, buffer, getXtFromMagnet } = require('../lib');
+const collection = require('../core/database');
+const querystring = require('querystring');
 
 module.exports = async (id, query = '', history = 'p=1:o=0', publicMessage = false, me, allowGetFiles = false, canDownloadTorrent = false) => {
-  const torrent = await getTorrent(id)
-  const DbTorrent = await collection('torrents').findOne({ id: torrent.id }).exec()
+  const torrent = await getTorrent(id);
+  const DbTorrent = await collection('torrents').findOne({ id: torrent.id }).exec();
   const keyboard = publicMessage ? [
     [
       {
@@ -44,7 +44,7 @@ module.exports = async (id, query = '', history = 'p=1:o=0', publicMessage = fal
         callback_data: `t=${id}:${history}`
       }
     ]
-  ]
+  ];
   if (allowGetFiles) {
     if (canDownloadTorrent) {
       keyboard.push(
@@ -84,7 +84,7 @@ module.exports = async (id, query = '', history = 'p=1:o=0', publicMessage = fal
       parse_mode: 'HTML'
     }
   }
-}
+};
 
 // function countFiles (torrent) {
 //   let fileCount = 0

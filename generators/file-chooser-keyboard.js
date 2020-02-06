@@ -1,10 +1,10 @@
-const { buttons, templates } = require('../lib')
-const querystring = require('querystring')
-const { AllHtmlEntities } = require('html-entities')
-const { decode } = new AllHtmlEntities()
+const { buttons, templates } = require('../lib');
+const querystring = require('querystring');
+const { AllHtmlEntities } = require('html-entities');
+const { decode } = new AllHtmlEntities();
 
 module.exports = async (db, id, offset = 0, searchUrl) => {
-  const torrent = await db('torrents').findOne({ id: id }).exec()
+  const torrent = await db('torrents').findOne({ id: id }).exec();
 
   if (!torrent) {
     return {
@@ -90,4 +90,4 @@ module.exports = async (db, id, offset = 0, searchUrl) => {
       }
     }
   }
-}
+};

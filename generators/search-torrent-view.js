@@ -1,16 +1,16 @@
-const { search } = require('../nyaasi')
-const { buttons, templates } = require('../lib')
-const { AllHtmlEntities } = require('html-entities')
-const { decode } = new AllHtmlEntities()
+const { search } = require('../nyaasi');
+const { buttons, templates } = require('../lib');
+const { AllHtmlEntities } = require('html-entities');
+const { decode } = new AllHtmlEntities();
 
 module.exports = async (query = '', page = 1, offset = 0) => {
   const { files: searchResult, current_page, last_page } = await search(query, {
     params: {
       p: page
     }
-  })
+  });
   const slicedTorrents = searchResult
-    .slice(offset, offset + 10)
+    .slice(offset, offset + 10);
   const keyboard = slicedTorrents
     .map(el => (
       [
@@ -19,7 +19,7 @@ module.exports = async (query = '', page = 1, offset = 0) => {
           callback_data: `t=${el.id}:p=${page}:o=${offset}`
         }
       ]
-    ))
+    ));
   if (offset >= 10) {
     if (slicedTorrents.length === 10 && offset < 70) {
       keyboard.unshift(
@@ -53,7 +53,7 @@ module.exports = async (query = '', page = 1, offset = 0) => {
       ]
     )
   }
-  const pageLine = []
+  const pageLine = [];
   if (page >= 2) {
     pageLine.push(
       {
@@ -67,7 +67,7 @@ module.exports = async (query = '', page = 1, offset = 0) => {
       text: buttons.page.locate(page),
       callback_data: `p=${page}:o=${offset}`
     }
-  )
+  );
   if (last_page - current_page >= 1) {
     pageLine.push(
       {
@@ -92,12 +92,12 @@ module.exports = async (query = '', page = 1, offset = 0) => {
       }
     )
   }
-  keyboard.unshift(pageLine)
+  keyboard.unshift(pageLine);
   keyboard.unshift([{
     text: 'Switch to inline',
     switch_inline_query_current_chat: query
-  }])
-  const searchUrl = `https://${process.env.HOST}/?p=${page}&q=${query}`
+  }]);
+  const searchUrl = `https://${process.env.HOST}/?p=${page}&q=${query}`;
   return {
     text: templates.searchText(
       searchUrl,
@@ -113,4 +113,4 @@ module.exports = async (query = '', page = 1, offset = 0) => {
       parse_mode: 'HTML'
     }
   }
-}
+};
