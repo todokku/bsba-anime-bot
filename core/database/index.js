@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
-const connection = mongoose.createConnection(process.env.DATABASE_URL, {
+const connection = mongoose.createConnection(process.env.MONGODB_URI || 'mongodb://localhost/bsba-anime', {
   useNewUrlParser: true,
   createIndex: true
 });
